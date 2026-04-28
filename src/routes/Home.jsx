@@ -1,8 +1,12 @@
 import React from 'react'
+import FillToolBar from '../components/FillToolBar'
 
 function Home() {
   return (
-    <div>Home</div>
+    <div>
+      <FillToolBar />
+    </div>
+    
   )
 }
 

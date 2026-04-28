@@ -46,7 +46,7 @@ function TopHeader() {
                 </div>
 
                 {/* Nav Links */}
-                <ul className="hidden lg:flex items-center gap-10 text-white text-sm ml-4">
+                <ul className="hidden lg:flex items-center gap-10 text-white text-sm ml-4 whitespace-nowrap">
                     <li>
                         <Link to="/Catalog" className="hover:text-gray-300">
                             Catalog
@@ -67,7 +67,7 @@ function TopHeader() {
             </div>
 
             {/* Right Section */}
-            <div className="flex items-center gap-2 text-white ml-4">
+            <div className="flex items-center text-white ml-4">
 
                 <button className="w-12 h-12 flex items-center justify-center hover:bg-gray-800 text-xl cursor-pointer">
                     <CiCircleQuestion />
