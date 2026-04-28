@@ -1,10 +1,12 @@
 import React from 'react'
-import FillToolBar from '../components/FillToolBar'
+import ToolBar from '../components/ToolBar'
+import FileBar from '../components/FileBar'
 
 function Home() {
   return (
     <div>
-      <FillToolBar />
+      <FileBar />
+      <ToolBar />
     </div>
     
   )
