@@ -5,7 +5,7 @@ import TopHeader from './components/TopHeader'
 
 function App() {
   return (
-    <main>
+    <main className='h-screen flex flex-col'>
       <TopHeader />
       <Routes>
       <Route path='/' element={<Home />} />
