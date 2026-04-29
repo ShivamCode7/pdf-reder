@@ -7,10 +7,10 @@ import SideBarThumbnails from '../components/SideBarThumbnails'
 
 function Home() {
   return (
-    <div className='flex flex-col h-full'>
+    <div>
       <FileBar />
       <ToolBar />
-      <div className='flex h-full gap-4'>
+      <div className='flex h-full'>
         <SideBarThumbnails />
         <InvoiceCanvas />
         <BottomRightTools />
