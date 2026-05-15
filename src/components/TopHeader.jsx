@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CiCircleQuestion } from 'react-icons/ci'
 import { FiUser } from 'react-icons/fi'
 import { IoIosNotificationsOutline } from 'react-icons/io'

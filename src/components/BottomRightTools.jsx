@@ -1,64 +1,290 @@
-import React from "react";
-import { BiCommentDetail, BiRotateLeft } from "react-icons/bi";
-import { GrZoomIn, GrZoomOut } from "react-icons/gr";
-import { IoSettingsOutline } from "react-icons/io5";
-import { LuBookText } from "react-icons/lu";
-import { TbFileSettings } from "react-icons/tb";
 import DocumentInfo from "./DocumentInfo";
 import Comments from "./Comments";
+import Notes from "./Notes";
 
-function BottomRightTools() {
+function BottomRightTools({
+  activePanel,
+  setActivePanel,
+  currentPage,
+  totalPages,
+  onPageChange,
+  onZoomIn,
+  onZoomOut,
+  onResetZoom,
+  comments,
+  notes,
+  onAddNote,
+  document,
+}) {
+  const togglePanel = (panel) => {
+    setActivePanel(activePanel === panel ? null : panel);
+  };
+
+  const commitPageDraft = (value) => {
+    onPageChange(value);
+  };
+
   return (
     <>
-    <DocumentInfo />
-    <Comments />
+      <DocumentInfo
+        isOpen={activePanel === "info"}
+        onClose={() => setActivePanel(null)}
+        document={document}
+      />
+      <Comments
+        isOpen={activePanel === "comments"}
+        onClose={() => setActivePanel(null)}
+        comments={comments}
+      />
+      <Notes
+        isOpen={activePanel === "notes"}
+        onClose={() => setActivePanel(null)}
+        notes={notes}
+        onAddNote={onAddNote}
+      />
       <div className="flex flex-col justify-between">
         <div className="flex flex-col">
-          <button className="size-12 flex items-center justify-center cursor-pointer">
-            <TbFileSettings strokeWidth={1.3} />
+          <button
+            className={`size-12 flex items-center justify-center cursor-pointer text-[#525252] hover:text-[#3b3b3b] ${activePanel === "info" ? "bg-[#E8F0FF]" : ""}`}
+            aria-label="document info"
+            onClick={() => togglePanel("info")}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_648)">
+                <path
+                  d="M15 12V11H13.9494C13.885 10.6871 13.7607 10.3895 13.5835 10.1236L14.3285 9.37855L13.6215 8.67155L12.8765 9.41655C12.6106 9.2393 12.313 9.11505 12 9.05055V8H11V9.05055C10.6871 9.115 10.3895 9.2393 10.1236 9.4165L9.37855 8.6715L8.67155 9.3785L9.41655 10.1235C9.2393 10.3894 9.11505 10.687 9.05055 11H8V12H9.05055C9.115 12.313 9.2393 12.6105 9.4165 12.8764L8.6715 13.6215L9.3785 14.3285L10.1235 13.5835C10.3894 13.7607 10.687 13.8849 11 13.9494V15H12V13.9494C12.313 13.885 12.6105 13.7607 12.8764 13.5835L13.6215 14.3285L14.3285 13.6215L13.5835 12.8765C13.7607 12.6106 13.8849 12.313 13.9494 12H15ZM11.5 13C10.6716 13 10 12.3285 10 11.5C10 10.6716 10.6716 10 11.5 10C12.3285 10 13 10.6716 13 11.5C12.9991 12.3281 12.3281 12.9991 11.5 13Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M11.7495 4.5425L8.3535 1.1465C8.25975 1.05275 8.13255 1 8 1H3C2.44995 1 2 1.44995 2 2V14C2 14.55 2.44995 15 3 15H7V14H3V2H7V5C7 5.55125 7.4485 6 8 6H11.146C11.4924 6 11.802 5.7932 11.9346 5.47315C12.0674 5.15285 11.9946 4.7876 11.7495 4.5425ZM8 5V2.20705L10.7927 5H8Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_648">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
-          <button className="size-12 flex items-center justify-center cursor-pointer">
-            <BiCommentDetail />
+          <button
+            className={`size-12 flex items-center justify-center cursor-pointer text-[#525252] hover:text-[#3b3b3b] ${activePanel === "comments" ? "bg-[#E8F0FF]" : ""}`}
+            aria-label="comments"
+            onClick={() => togglePanel("comments")}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_654)">
+                <path
+                  d="M8.87 15L8 14.5L10 11H13C13.2652 11 13.5196 10.8946 13.7071 10.7071C13.8946 10.5196 14 10.2652 14 10V4C14 3.73478 13.8946 3.48043 13.7071 3.29289C13.5196 3.10536 13.2652 3 13 3H3C2.73478 3 2.48043 3.10536 2.29289 3.29289C2.10536 3.48043 2 3.73478 2 4V10C2 10.2652 2.10536 10.5196 2.29289 10.7071C2.48043 10.8946 2.73478 11 3 11H7.5V12H3C2.46957 12 1.96086 11.7893 1.58579 11.4142C1.21071 11.0391 1 10.5304 1 10V4C1 3.46957 1.21071 2.96086 1.58579 2.58579C1.96086 2.21071 2.46957 2 3 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V10C15 10.5304 14.7893 11.0391 14.4142 11.4142C14.0391 11.7893 13.5304 12 13 12H10.58L8.87 15Z"
+                  fill="currentColor"
+                />
+                <path d="M12 5H4V6H12V5Z" fill="currentColor" />
+                <path d="M9 8H4V9H9V8Z" fill="currentColor" />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_654">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
-          <button className="size-12 flex items-center justify-center cursor-pointer">
-            <LuBookText />
+          <button
+            className={`size-12 flex items-center justify-center cursor-pointer text-[#525252] hover:text-[#3b3b3b] ${activePanel === "notes" ? "bg-[#E8F0FF]" : ""}`}
+            aria-label="notes"
+            onClick={() => togglePanel("notes")}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_661)">
+                <path
+                  d="M13 1H4C3.73478 1 3.48043 1.10536 3.29289 1.29289C3.10536 1.48043 3 1.73478 3 2V4H2V5H3V7.5H2V8.5H3V11H2V12H3V14C3 14.2652 3.10536 14.5196 3.29289 14.7071C3.48043 14.8946 3.73478 15 4 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V2C14 1.73478 13.8946 1.48043 13.7071 1.29289C13.5196 1.10536 13.2652 1 13 1ZM13 14H4V12H5V11H4V8.5H5V7.5H4V5H5V4H4V2H13V14Z"
+                  fill="currentColor"
+                />
+                <path d="M11 4H7V5H11V4Z" fill="currentColor" />
+                <path d="M11 7.5H7V8.5H11V7.5Z" fill="currentColor" />
+                <path d="M11 11H7V12H11V11Z" fill="currentColor" />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_661">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
         </div>
 
         <div className="flex flex-col">
-          <button className="size-12 flex items-center justify-center cursor-pointer">
+          <div className="size-12 flex items-center justify-center">
             <input
+              key={currentPage}
               type="text"
-              className="h-8 w-8 outline-none border border-gray-700 rounded-md text-center"
-              value={1}
+              inputMode="numeric"
+              className="h-8 w-8 outline-none border border-[#4F4F4F] rounded-md text-center text-[#6B6B6B]"
+              defaultValue={currentPage}
+              aria-label="page"
+              onChange={(event) => {
+                event.currentTarget.value = event.currentTarget.value.replace(
+                  /\D/g,
+                  "",
+                );
+              }}
+              onBlur={(event) => commitPageDraft(event.currentTarget.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  commitPageDraft(event.currentTarget.value);
+                  event.currentTarget.blur();
+                }
+              }}
             />
-          </button>
-          <button className="size-12 flex items-center justify-center cursor-pointer">
-            2
-          </button>
-          <button
-            aria-label="zoom resert"
-            className="size-12 flex items-center justify-center cursor-pointer"
+          </div>
+          <div
+            className="size-12 flex items-center justify-center text-[#6B6B6B]"
+            aria-label="total pages"
           >
-            <BiRotateLeft className="-rotate-45 inline-block" />
+            {totalPages}
+          </div>
+          <button
+            aria-label="reset zoom"
+            className="size-12 flex items-center justify-center cursor-pointer text-[#6B6B6B] hover:text-[#3b3b3b]"
+            onClick={onResetZoom}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_1263)">
+                <path
+                  d="M8.95508 13.4104L9.13008 14.4104C9.87649 14.2802 10.5941 14.0196 11.2501 13.6404L10.7501 12.7754C10.1937 13.0909 9.58609 13.3059 8.95508 13.4104Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M12.21 11.5359L13 12.1759C13.4843 11.5944 13.8633 10.9328 14.12 10.2209L13.185 9.88086C12.9596 10.4854 12.6295 11.0457 12.21 11.5359Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M4.75 13.6241C5.40596 14.0033 6.12359 14.264 6.87 14.3941L7.045 13.3941C6.41303 13.285 5.80534 13.0649 5.25 12.7441L4.75 13.6241Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M2.8349 9.88086L1.8999 10.2209C2.1505 10.9313 2.52271 11.5929 2.9999 12.1759L3.1599 12.0459L3.7699 11.5459C3.35745 11.0541 3.03424 10.494 2.8149 9.89086L2.8349 9.88086Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M14.5 7.9993C14.4987 7.2415 14.3632 6.48992 14.1 5.7793L13.165 6.1193C13.3837 6.72211 13.497 7.35805 13.5 7.9993H14.5Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M13 3.8252C12.39 3.09089 11.6258 2.49995 10.7617 2.09436C9.89749 1.68878 8.95461 1.47852 8 1.47852C7.04539 1.47852 6.10251 1.68878 5.23835 2.09436C4.37418 2.49995 3.60997 3.09089 3 3.8252V2.0002H2V6.0002H6V5.0002H3.405C3.87428 4.28329 4.50456 3.68594 5.24561 3.25578C5.98665 2.82561 6.81794 2.57454 7.67321 2.52257C8.52848 2.47061 9.38406 2.61918 10.1717 2.95646C10.9594 3.29374 11.6574 3.81038 12.21 4.4652L13 3.8252Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_1263">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
           <button
             aria-label="zoom in"
-            className="size-12 flex items-center justify-center cursor-pointer"
+            className="size-12 flex items-center justify-center cursor-pointer text-[#6B6B6B] hover:text-[#3b3b3b]"
+            onClick={onZoomIn}
           >
-            <GrZoomIn />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_1276)">
+                <path d="M9 6H7V4H6V6H4V7H6V9H7V7H9V6Z" fill="currentColor" />
+                <path
+                  d="M10.724 10C11.5489 9.0204 12.0009 7.78067 12 6.5C12 5.41221 11.6774 4.34884 11.0731 3.44437C10.4687 2.5399 9.60976 1.83495 8.60476 1.41867C7.59977 1.00238 6.4939 0.893465 5.42701 1.10568C4.36011 1.3179 3.3801 1.84173 2.61092 2.61092C1.84173 3.3801 1.3179 4.36011 1.10568 5.42701C0.893465 6.4939 1.00238 7.59977 1.41867 8.60476C1.83495 9.60976 2.5399 10.4687 3.44437 11.0731C4.34884 11.6774 5.41221 12 6.5 12C7.78067 12.0009 9.0204 11.5489 10 10.724L13.793 14.5L14.5 13.793L10.724 10ZM6.5 11C5.60999 11 4.73996 10.7361 3.99994 10.2416C3.25992 9.74715 2.68314 9.04434 2.34254 8.22208C2.00195 7.39981 1.91284 6.49501 2.08647 5.6221C2.2601 4.74918 2.68869 3.94736 3.31802 3.31802C3.94736 2.68869 4.74918 2.2601 5.6221 2.08647C6.49501 1.91284 7.39981 2.00195 8.22208 2.34254C9.04434 2.68314 9.74715 3.25992 10.2416 3.99994C10.7361 4.73996 11 5.60999 11 6.5C10.9987 7.69307 10.5241 8.83689 9.68052 9.68052C8.83689 10.5241 7.69307 10.9987 6.5 11Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_1276">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
           <button
             aria-label="zoom out"
-            className="size-12 flex items-center justify-center cursor-pointer"
+            className="size-12 flex items-center justify-center cursor-pointer text-[#6B6B6B] hover:text-[#3b3b3b]"
+            onClick={onZoomOut}
           >
-            <GrZoomOut />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_1285)">
+                <path d="M9 6H4V7H9V6Z" fill="currentColor" />
+                <path
+                  d="M10.724 10C11.5489 9.0204 12.0009 7.78067 12 6.5C12 5.41221 11.6774 4.34884 11.0731 3.44437C10.4687 2.5399 9.60976 1.83495 8.60476 1.41867C7.59977 1.00238 6.4939 0.893465 5.42701 1.10568C4.36011 1.3179 3.3801 1.84173 2.61092 2.61092C1.84173 3.3801 1.3179 4.36011 1.10568 5.42701C0.893465 6.4939 1.00238 7.59977 1.41867 8.60476C1.83495 9.60976 2.5399 10.4687 3.44437 11.0731C4.34884 11.6774 5.41221 12 6.5 12C7.78067 12.0009 9.0204 11.5489 10 10.724L13.793 14.5L14.5 13.793L10.724 10ZM6.5 11C5.60999 11 4.73996 10.7361 3.99994 10.2416C3.25992 9.74715 2.68314 9.04434 2.34254 8.22208C2.00195 7.39981 1.91284 6.49501 2.08647 5.6221C2.2601 4.74918 2.68869 3.94736 3.31802 3.31802C3.94736 2.68869 4.74918 2.2601 5.6221 2.08647C6.49501 1.91284 7.39981 2.00195 8.22208 2.34254C9.04434 2.68314 9.74715 3.25992 10.2416 3.99994C10.7361 4.73996 11 5.60999 11 6.5C10.9987 7.69307 10.5241 8.83689 9.68052 9.68052C8.83689 10.5241 7.69307 10.9987 6.5 11Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_1285">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
+
           <button
             aria-label="settings"
-            className="size-12 flex items-center justify-center cursor-pointer"
+            className="size-12 flex items-center justify-center cursor-pointer text-[#6B6B6B] hover:text-[#3b3b3b]"
           >
-            <IoSettingsOutline />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2493_1299)">
+                <path
+                  d="M13.4999 8.37971C13.4999 8.25471 13.4999 8.12971 13.4999 7.99971C13.4999 7.86971 13.4999 7.74471 13.4999 7.61471L14.4599 6.77471C14.6368 6.61874 14.753 6.40523 14.7877 6.17192C14.8225 5.9386 14.7737 5.70051 14.6499 5.49971L13.4699 3.49972C13.3822 3.34785 13.2561 3.22171 13.1043 3.13395C12.9525 3.04619 12.7802 2.99989 12.6049 2.99971C12.4962 2.99888 12.3881 3.01577 12.2849 3.04972L11.0699 3.45972C10.8601 3.32032 10.6413 3.19504 10.4149 3.08472L10.1599 1.82472C10.1142 1.59452 9.98893 1.38774 9.80611 1.24057C9.62329 1.0934 9.39453 1.01522 9.15988 1.01971H6.81988C6.58523 1.01522 6.35647 1.0934 6.17366 1.24057C5.99084 1.38774 5.8656 1.59452 5.81988 1.82472L5.56488 3.08472C5.33685 3.19502 5.11637 3.32029 4.90488 3.45972L3.71488 3.02972C3.61053 3.00253 3.50247 2.9924 3.39488 2.99971C3.21952 2.99989 3.04729 3.04619 2.89546 3.13395C2.74364 3.22171 2.61756 3.34785 2.52988 3.49972L1.34988 5.49971C1.23318 5.70021 1.18981 5.93504 1.22721 6.164C1.26461 6.39295 1.38044 6.60178 1.55488 6.75471L2.49988 7.61971C2.49988 7.74471 2.49988 7.86971 2.49988 7.99971C2.49988 8.12971 2.49988 8.25471 2.49988 8.38472L1.55488 9.22472C1.37552 9.37871 1.25651 9.59128 1.21898 9.82469C1.18145 10.0581 1.22783 10.2973 1.34988 10.4997L2.52988 12.4997C2.61756 12.6516 2.74364 12.7777 2.89546 12.8655C3.04729 12.9532 3.21952 12.9995 3.39488 12.9997C3.50356 13.0005 3.61164 12.9837 3.71488 12.9497L4.92988 12.5397C5.13965 12.6791 5.35847 12.8044 5.58488 12.9147L5.83988 14.1747C5.8856 14.4049 6.01084 14.6117 6.19366 14.7589C6.37647 14.906 6.60523 14.9842 6.83988 14.9797H9.19988C9.43453 14.9842 9.66329 14.906 9.84611 14.7589C10.0289 14.6117 10.1542 14.4049 10.1999 14.1747L10.4549 12.9147C10.6829 12.8044 10.9034 12.6791 11.1149 12.5397L12.3249 12.9497C12.4281 12.9837 12.5362 13.0005 12.6449 12.9997C12.8202 12.9995 12.9925 12.9532 13.1443 12.8655C13.2961 12.7777 13.4222 12.6516 13.5099 12.4997L14.6499 10.4997C14.7666 10.2992 14.81 10.0644 14.7726 9.83543C14.7352 9.60648 14.6193 9.39765 14.4449 9.24471L13.4999 8.37971ZM12.6049 11.9997L10.8899 11.4197C10.4884 11.7598 10.0296 12.0256 9.53488 12.2047L9.17988 13.9997H6.81988L6.46488 12.2247C5.97409 12.0405 5.51774 11.7751 5.11488 11.4397L3.39488 11.9997L2.21488 9.99971L3.57488 8.79972C3.48243 8.28214 3.48243 7.75229 3.57488 7.23471L2.21488 5.99971L3.39488 3.99972L5.10988 4.57972C5.51135 4.23966 5.97018 3.97384 6.46488 3.79472L6.81988 1.99971H9.17988L9.53488 3.77472C10.0257 3.95893 10.482 4.22429 10.8849 4.55972L12.6049 3.99972L13.7849 5.99971L12.4249 7.19971C12.5173 7.71729 12.5173 8.24714 12.4249 8.76472L13.7849 9.99971L12.6049 11.9997Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M8 11C7.40666 11 6.82664 10.8241 6.33329 10.4944C5.83994 10.1648 5.45543 9.69623 5.22836 9.14805C5.0013 8.59987 4.94189 7.99667 5.05765 7.41473C5.1734 6.83279 5.45912 6.29824 5.87868 5.87868C6.29824 5.45912 6.83279 5.1734 7.41473 5.05765C7.99667 4.94189 8.59987 5.0013 9.14805 5.22836C9.69623 5.45543 10.1648 5.83994 10.4944 6.33329C10.8241 6.82664 11 7.40666 11 8C11.004 8.39508 10.9292 8.78699 10.7798 9.15278C10.6305 9.51857 10.4096 9.85088 10.1303 10.1303C9.85088 10.4096 9.51857 10.6305 9.15278 10.7798C8.78699 10.9292 8.39508 11.004 8 11ZM8 6C7.73567 5.99384 7.47284 6.04137 7.22741 6.1397C6.98197 6.23803 6.75904 6.38512 6.57208 6.57208C6.38512 6.75904 6.23803 6.98197 6.1397 7.22741C6.04137 7.47284 5.99384 7.73567 6 8C5.99384 8.26433 6.04137 8.52716 6.1397 8.77259C6.23803 9.01803 6.38512 9.24097 6.57208 9.42793C6.75904 9.61488 6.98197 9.76198 7.22741 9.86031C7.47284 9.95864 7.73567 10.0062 8 10C8.26433 10.0062 8.52716 9.95864 8.77259 9.86031C9.01803 9.76198 9.24097 9.61488 9.42793 9.42793C9.61488 9.24097 9.76198 9.01803 9.86031 8.77259C9.95864 8.52716 10.0062 8.26433 10 8C10.0062 7.73567 9.95864 7.47284 9.86031 7.22741C9.76198 6.98197 9.61488 6.75904 9.42793 6.57208C9.24097 6.38512 9.01803 6.23803 8.77259 6.1397C8.52716 6.04137 8.26433 5.99384 8 6Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2493_1299">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
           </button>
         </div>
       </div>
